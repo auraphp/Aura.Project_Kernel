@@ -2,13 +2,13 @@
     "name": "aura/project-kernel",
     "type": "library",
     "description": "The shared kernel files for any Aura project.",
-    "keywords": ["web", "kernel"],
+    "keywords": ["project", "kernel"],
     "homepage": "http://auraphp.com/package/Aura.Web_Kernel",
     "license": "BSD-2-Clause",
     "authors": [
         {
-            "name": "Aura.Web_Kernel Contributors",
-            "homepage": "https://github.com/auraphp/Aura.Web_Kernel/contributors"
+            "name": "Aura.Project_Kernel Contributors",
+            "homepage": "https://github.com/auraphp/Aura.Project_Kernel/contributors"
         }
     ],
     "require": {
