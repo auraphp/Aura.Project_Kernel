@@ -1,9 +1,6 @@
 <?php
-namespace Aura\Web_Kernel;
+namespace Aura\Project_Kernel;
 
-/**
- * Eventually extract this to its own package as a base for Cli_Kernel.
- */
 class ProjectKernel
 {
     protected $di;
