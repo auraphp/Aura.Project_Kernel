@@ -25,7 +25,7 @@ class ProjectKernel
         $base,
         $mode
     ) {
-        $loader->addPrefix('', "{$base}/src");
+        $loader->add('', "{$base}/src");
         $di->set('loader', $loader);
         
         $this->di   = $di;
