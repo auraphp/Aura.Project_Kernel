@@ -1,6 +1,9 @@
 <?php
 namespace Aura\Project_Kernel;
 
+use Aura\Di\Container;
+use Composer\Autoload\ClassLoader;
+
 class ProjectKernel
 {
     protected $di;
@@ -16,8 +19,15 @@ class ProjectKernel
     
     protected $config_log = array();
     
-    public function __construct($di, $base, $mode)
-    {
+    public function __construct(
+        ClassLoader $loader,
+        Container $di,
+        $base,
+        $mode
+    ) {
+        $loader->addPrefix('', "{$base}/src");
+        $di->set('loader', $loader);
+        
         $this->di   = $di;
         $this->base = $base;
         $this->mode = $mode;
@@ -57,7 +67,7 @@ class ProjectKernel
         }
     }
     
-    protected function loadConfig($type)
+    protected function loadConfig($stage)
     {
         // the config includer
         $includer = $this->di->newInstance('Aura\Includer\Includer');
@@ -67,15 +77,15 @@ class ProjectKernel
         
         // always load the default configs
         $includer->setFiles(array(
-            "config/default/{$type}.php",
-            "config/default/{$type}/*.php",
+            "config/default/{$stage}.php",
+            "config/default/{$stage}/*.php",
         ));
         
         // load any non-default configs
         if ($this->mode != 'default') {
             $includer->addFiles(array(
-                "config/{$this->mode}/{$type}.php",
-                "config/{$this->mode}/{$type}/*.php",
+                "config/{$this->mode}/{$stage}.php",
+                "config/{$this->mode}/{$stage}/*.php",
             ));
         }
         
