@@ -4,8 +4,9 @@
  */
 $logger = $di->get('logger');
 
-// default log to {$PROJECT_PATH}/tmp/log
-$stream = $di->params['Aura\Project_Kernel\ProjectKernel']['base']
+// default log location is {$PROJECT_PATH}/tmp/log, determined relative to
+// {$PROJECT_PATH}/vendor/aura/project-kernel/config/default/modify.php
+$stream = dirname(dirname(dirname(dirname(dirname(__DIR__)))))
         . DIRECTORY_SEPARATOR . 'tmp'
         . DIRECTORY_SEPARATOR . 'log';
 $logger->pushHandler($di->newInstance('Monolog\Handler\StreamHandler', array(
