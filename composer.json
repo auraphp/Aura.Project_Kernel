@@ -1,7 +1,7 @@
 {
     "name": "aura/project-kernel",
     "type": "library",
-    "description": "The shared kernel files for any Aura project.",
+    "description": "The shared kernel files for an Aura project.",
     "keywords": ["project", "kernel"],
     "homepage": "http://auraphp.com/package/Aura.Web_Kernel",
     "license": "BSD-2-Clause",
@@ -12,7 +12,10 @@
         }
     ],
     "require": {
-        "php": ">=5.4.0"
+        "php": ">=5.4.0",
+        "aura/di": "1.1.1",
+        "aura/includer": "dev-develop-2",
+        "monolog/monolog": "*"
     },
     "autoload": {
         "files": ["autoload.php"]
