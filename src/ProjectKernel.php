@@ -28,6 +28,8 @@ class ProjectKernel
         $loader->add('', "{$base}/src");
         $di->set('loader', $loader);
         
+        $di->params[__CLASS__]['base'] = $base;
+        
         $this->di   = $di;
         $this->base = $base;
         $this->mode = $mode;
