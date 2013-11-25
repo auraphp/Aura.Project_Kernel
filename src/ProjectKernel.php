@@ -3,7 +3,7 @@
  * 
  * This file is part of Aura for PHP.
  * 
- * @package Aura.Web
+ * @package Aura.Project_Kernel
  * 
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 

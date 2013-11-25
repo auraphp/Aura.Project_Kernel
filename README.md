@@ -1,4 +1,4 @@
-# Aura.Web_Kernel
+# Aura.Project_Kernel
 
 Unlike Aura library packages, this Kernel package is *not* intended for
 independent use. It exists as a base for [Aura.Cli_Kernel][],

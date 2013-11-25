@@ -3,7 +3,7 @@
     "type": "library",
     "description": "The shared kernel files for an Aura project.",
     "keywords": ["project", "kernel"],
-    "homepage": "http://auraphp.com/package/Aura.Web_Kernel",
+    "homepage": "http://auraphp.com/package/Aura.Project_Kernel",
     "license": "BSD-2-Clause",
     "authors": [
         {
