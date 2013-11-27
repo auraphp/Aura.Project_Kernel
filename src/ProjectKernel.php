@@ -139,7 +139,7 @@ class ProjectKernel
                 continue;
             }
             $type = $package->extra->aura->type;
-            $dir = $this->proejct->getVendorPath($package->name);
+            $dir = $this->project->getVendorPath($package->name);
             $this->packages[$type][$package->name] = $dir;
         }
     }
