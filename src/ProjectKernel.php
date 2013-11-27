@@ -11,6 +11,7 @@
 namespace Aura\Project_Kernel;
 
 use Aura\Di\ContainerInterface;
+use Aura\Includer\Includer;
 use Composer\Autoload\ClassLoader;
 
 /**
@@ -33,21 +34,12 @@ class ProjectKernel
     
     /**
      * 
-     * The base directory where the project resides.
+     * Information about the project.
      * 
-     * @var string
-     * 
-     */
-    protected $base;
-    
-    /**
-     * 
-     * The operational mode (default, develop, testing, staging, prod, etc).
-     * 
-     * @var string
+     * @var Project
      * 
      */
-    protected $mode;
+    protected $project;
     
     /**
      * 
@@ -77,6 +69,8 @@ class ProjectKernel
      * 
      * Constructor.
      * 
+     * @param Project $project A project information object.
+     * 
      * @param ClassLoader $loader An autoloader, typically the Composer
      * autoloader. This will be retained in the DI container as a service
      * named 'loader'.
@@ -85,21 +79,17 @@ class ProjectKernel
      * 
      * @param string $base The base directory for the project.
      * 
-     * @param string $mode The operational mode.
+     * @param string $mode The config mode.
      * 
      */
     public function __construct(
-        ClassLoader $loader,
+        Project $project,
         ContainerInterface $di,
-        $base,
-        $mode
+        Includer $includer
     ) {
-        $loader->add('', "{$base}/src");
-        $di->set('loader', $loader);
-        
-        $this->di   = $di;
-        $this->base = $base;
-        $this->mode = $mode;
+        $this->project = $project;
+        $this->di = $di;
+        $this->includer = $includer;
     }
     
     /**
@@ -142,19 +132,14 @@ class ProjectKernel
      */
     protected function loadPackages()
     {
-        $file = str_replace(
-            '/',
-            DIRECTORY_SEPARATOR,
-            "{$this->base}/vendor/composer/installed.json"
-        );
-        
+        $file = $this->project->getVendorPath('composer/installed.json');
         $installed = json_decode(file_get_contents($file));
         foreach ($installed as $package) {
             if (! isset($package->extra->aura->type)) {
                 continue;
             }
             $type = $package->extra->aura->type;
-            $dir = "{$this->base}/vendor/{$package->name}";
+            $dir = $this->proejct->getVendorPath($package->name);
             $this->packages[$type][$package->name] = $dir;
         }
     }
@@ -171,35 +156,35 @@ class ProjectKernel
      */
     protected function includeConfig($stage)
     {
-        // the config includer
-        $includer = $this->di->newInstance('Aura\Includer\Includer');
+        // the project config mode
+        $mode = $this->project->getMode();
         
         // pass DI container to the config files
-        $includer->setVars(array('di' => $this->di));
+        $this->includer->setVars(array('di' => $this->di));
         
         // always load the default configs
-        $includer->setFiles(array(
+        $this->includer->setFiles(array(
             "config/default/{$stage}.php",
             "config/default/{$stage}/*.php",
         ));
         
         // load any non-default configs
-        if ($this->mode != 'default') {
-            $includer->addFiles(array(
-                "config/{$this->mode}/{$stage}.php",
-                "config/{$this->mode}/{$stage}/*.php",
+        if ($mode != 'default') {
+            $this->includer->addFiles(array(
+                "config/{$mode}/{$stage}.php",
+                "config/{$mode}/{$stage}/*.php",
             ));
         }
         
         // load in this order: library packages, kernel packages, project
-        $includer->addDirs($this->packages['library']);
-        $includer->addDirs($this->packages['kernel']);
-        $includer->addDir($this->base);
+        $this->includer->addDirs($this->packages['library']);
+        $this->includer->addDirs($this->packages['kernel']);
+        $this->includer->addDir($this->project->getBasePath());
         
         // actually do the loading
-        $includer->load();
+        $this->includer->load();
         
         // retain the debug messages for logging
-        $this->config_log[] = $includer->getDebug();
+        $this->config_log[] = $this->includer->getDebug();
     }
 }
