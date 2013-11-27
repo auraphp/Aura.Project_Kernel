@@ -35,7 +35,7 @@ class Project
      * @var string
      * 
      */
-    protected $base;
+    protected $mode;
 
     /**
      * 
