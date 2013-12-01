@@ -122,7 +122,7 @@ class ProjectKernel
         }
         
         // done!
-        return $di;
+        return $this->di;
     }
     
     /**

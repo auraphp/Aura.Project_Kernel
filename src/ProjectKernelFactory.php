@@ -20,7 +20,6 @@ class ProjectKernelFactory
         $di->set('loader', $loader);
         
         // return the new kernel instance
-        $class = $this->class;
         return new ProjectKernel($project, $di, $includer);
     }
 }
