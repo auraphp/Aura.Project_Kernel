@@ -12,7 +12,6 @@ namespace Aura\Project_Kernel;
 
 use Aura\Di\ContainerInterface;
 use Aura\Includer\Includer;
-use Composer\Autoload\ClassLoader;
 
 /**
  * 
@@ -63,7 +62,7 @@ class ProjectKernel
      * @var array
      * 
      */
-    protected $config_log = array();
+    protected $debug = array();
     
     /**
      * 
@@ -113,14 +112,17 @@ class ProjectKernel
         // 2nd stage config: modify services programmatically
         $this->includeConfig('modify');
         
-        // log the config activity
+        // debug logging
         $logger = $this->di->get('logger');
         $logger->debug(__METHOD__);
-        foreach ($this->config_log as $messages) {
+        foreach ($this->debug as $messages) {
             foreach ($messages as $message) {
                 $logger->debug(__METHOD__ . " {$message}");
             }
         }
+        
+        // done!
+        return $di;
     }
     
     /**
@@ -185,6 +187,6 @@ class ProjectKernel
         $this->includer->load();
         
         // retain the debug messages for logging
-        $this->config_log[] = $this->includer->getDebug();
+        $this->debug[] = $this->includer->getDebug();
     }
 }

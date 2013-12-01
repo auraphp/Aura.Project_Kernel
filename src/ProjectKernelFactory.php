@@ -8,8 +8,6 @@ use Aura\Includer\Includer;
 
 class ProjectKernelFactory
 {
-    protected $class = 'Aura\Project_Kernel\ProjectKernel';
-    
     public function newInstance($base, $mode, $loader)
     {
         // objects for kernel instance
@@ -23,6 +21,6 @@ class ProjectKernelFactory
         
         // return the new kernel instance
         $class = $this->class;
-        return new $class($project, $di, $includer);
+        return new ProjectKernel($project, $di, $includer);
     }
 }
