@@ -13,9 +13,9 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "aura/di": "dev-develop-2",
-        "aura/includer": "dev-develop-2",
-        "monolog/monolog": "*"
+        "aura/di": "2.*@dev",
+        "aura/includer": "2.*@dev",
+        "monolog/monolog": "1.*"
     },
     "autoload": {
         "files": ["autoload.php"]
@@ -23,6 +23,9 @@
     "extra": {
         "aura": {
             "type": "kernel"
+        },
+        "branch-alias": {
+            "dev-develop-2": "2.0.x-dev"
         }
     }
 }
