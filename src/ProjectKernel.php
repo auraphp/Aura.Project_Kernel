@@ -178,7 +178,9 @@ class ProjectKernel
             ));
         }
         
-        // load in this order: library packages, kernel packages, project
+        // reset dirs, then load in this order:
+        // library packages, kernel packages, project
+        $this->includer->setDirs(array());
         $this->includer->addDirs($this->packages['library']);
         $this->includer->addDirs($this->packages['kernel']);
         $this->includer->addDir($this->project->getBasePath());
