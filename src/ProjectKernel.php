@@ -127,7 +127,7 @@ class ProjectKernel
      */
     public function cacheConfig($stage)
     {
-        $file = $this->project->getCacheFile($stage);
+        $file = $this->getCacheFile($stage);
         if (file_exists($file)) {
             $this->addDebug("Cache config: unlink $file");
             unlink($file);
