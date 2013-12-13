@@ -190,7 +190,7 @@ class ProjectKernel
         }
         
         // the project config mode
-        $mode = $this->project->getConfigMode();
+        $mode = $this->project->getMode();
         
         // a copy of the includer
         $includer = clone $this->includer;
