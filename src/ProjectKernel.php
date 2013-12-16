@@ -111,14 +111,17 @@ class ProjectKernel
     {
         $file = $this->getCacheContainerFile();
         if (is_readable($file)) {
-            // recreate the cached DI container
+            // use the cached DI container, with only first-stage config
+            // (define) having been loaded
             $this->di = unserialize(file_get_contents($file));
         } else {
-            // load the existing DI container
+            // load the injected DI container
             $this->loadConfig('define');
-            $this->di->lock();
-            $this->loadConfig('modify');
         }
+        
+        // modify the container services
+        $this->di->lock();
+        $this->loadConfig('modify');
         
         // done
         return $this->di;
@@ -274,7 +277,8 @@ class ProjectKernel
     
     /**
      * 
-     * Reads the config files for each of the Aura-style packages.
+     * Reads the config files for each of the Aura-style packages; call this
+     * *instead of* __invoke().
      * 
      * @param string $stage The configuration stage: 'define' or 'modify'.
      * 
@@ -309,7 +313,8 @@ class ProjectKernel
     
     /**
      * 
-     * Caches the DI container to a serialized form.
+     * Caches the DI container to a serialized form; call this *instead of*
+     * __invoke().
      * 
      * @return null
      * 
@@ -332,8 +337,9 @@ class ProjectKernel
             mkdir($dir, 0755, true);
         }
         
-        // load the DI container
-        $this->__invoke();
+        // load the DI container with the first stage only; this is
+        // because extracting services will instantiate the objects.
+        $this->loadConfig('define');
         
         // serialize it and write to file
         file_put_contents($file, $this->di->getSerialized());
