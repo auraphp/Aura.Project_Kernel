@@ -12,7 +12,7 @@ namespace Aura\Project_Kernel;
 
 use Aura\Di\Config;
 use Aura\Di\Container;
-use Aura\Di\Forge;
+use Aura\Di\Lazy\LazyFactory;
 use Aura\Includer\Includer;
 
 /**
@@ -41,7 +41,7 @@ class ProjectKernelFactory
     {
         // objects for kernel instance
         $project  = new Project($base, $mode);
-        $di       = new Container(new Forge(new Config));
+        $di       = new Container(new Config, new LazyFactory);
         $includer = new Includer;
         
         // set project and loader into the container
