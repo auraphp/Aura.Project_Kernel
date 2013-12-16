@@ -109,9 +109,18 @@ class ProjectKernel
      */
     public function __invoke()
     {
-        $this->loadConfig('define');
-        $this->di->lock();
-        $this->loadConfig('modify');
+        $file = $this->getCacheContainerFile();
+        if (is_readable($file)) {
+            // recreate the cached DI container
+            $this->di = unserialize(file_get_contents($file));
+        } else {
+            // load the existing DI container
+            $this->loadConfig('define');
+            $this->di->lock();
+            $this->loadConfig('modify');
+        }
+        
+        // done
         return $this->di;
     }
     
@@ -127,7 +136,7 @@ class ProjectKernel
      */
     public function cacheConfig($stage)
     {
-        $file = $this->getCacheFile($stage);
+        $file = $this->getCacheConfigFile($stage);
         if (file_exists($file)) {
             $this->addDebug("Cache config: unlink $file");
             unlink($file);
@@ -218,7 +227,7 @@ class ProjectKernel
         $includer->addDir($this->project->getBasePath());
         
         // where should the cache file be?
-        $file = $this->getCacheFile($stage);
+        $file = $this->getCacheConfigFile($stage);
         $includer->setCacheFile($file);
         
         // done!
@@ -292,9 +301,47 @@ class ProjectKernel
      * @return string The cache file path.
      * 
      */
-    protected function getCacheFile($stage)
+    protected function getCacheConfigFile($stage)
     {
         $mode = $this->project->getMode();
         return $this->project->getTmpPath("cache/config/{$mode}/{$stage}.php");
+    }
+    
+    /**
+     * 
+     * Caches the DI container to a serialized form.
+     * 
+     * @return null
+     * 
+     */
+    public function cacheContainer()
+    {
+        // determine cache file name
+        $file = $this->getCacheContainerFile();
+        
+        // delete existing file, if any
+        if (file_exists($file)) {
+            $this->addDebug("Cache container: unlink $file");
+            unlink($file);
+        }
+        
+        // make sure a directory is there
+        $dir = dirname($file);
+        if (! is_dir($dir)) {
+            $this->addDebug("Cache container: mkdir $dir");
+            mkdir($dir, 0755, true);
+        }
+        
+        // load the DI container
+        $this->__invoke();
+        
+        // serialize it and write to file
+        file_put_contents($file, $this->di->getSerialized());
+    }
+    
+    protected function getCacheContainerFile()
+    {
+        $mode = $this->project->getMode();
+        return $this->project->getTmpPath("cache/di/{$mode}.serial");
     }
 }
