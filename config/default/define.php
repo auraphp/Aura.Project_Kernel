@@ -14,4 +14,4 @@
 /**
  * Services
  */
-$di->set('logger', $di->newInstance('Monolog\Logger'));
+$di->set('logger', $di->lazyNew('Monolog\Logger'));
