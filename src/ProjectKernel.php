@@ -109,21 +109,10 @@ class ProjectKernel
      */
     public function __invoke()
     {
-        $file = $this->getCacheContainerFile();
-        if (is_readable($file)) {
-            // use the cached DI container, with only first-stage config
-            // (define) having been loaded
-            $this->di = unserialize(file_get_contents($file));
-        } else {
-            // load the injected DI container
-            $this->loadConfig('define');
-        }
-        
-        // modify the container services
+        $this->addDebug(__METHOD__);
+        $this->loadConfig('define');
         $this->di->lock();
         $this->loadConfig('modify');
-        
-        // done
         return $this->di;
     }
     
@@ -155,6 +144,7 @@ class ProjectKernel
         
         $this->addDebug("Cache config: read config files");
         $code = $this->readConfig($stage);
+        
         $this->addDebug("Cache config: write $file");
         file_put_contents($file, $code);
     }
@@ -309,45 +299,5 @@ class ProjectKernel
     {
         $mode = $this->project->getMode();
         return $this->project->getTmpPath("cache/config/{$mode}/{$stage}.php");
-    }
-    
-    /**
-     * 
-     * Caches the DI container to a serialized form; call this *instead of*
-     * __invoke().
-     * 
-     * @return null
-     * 
-     */
-    public function cacheContainer()
-    {
-        // determine cache file name
-        $file = $this->getCacheContainerFile();
-        
-        // delete existing file, if any
-        if (file_exists($file)) {
-            $this->addDebug("Cache container: unlink $file");
-            unlink($file);
-        }
-        
-        // make sure a directory is there
-        $dir = dirname($file);
-        if (! is_dir($dir)) {
-            $this->addDebug("Cache container: mkdir $dir");
-            mkdir($dir, 0755, true);
-        }
-        
-        // load the DI container with the first stage only; this is
-        // because extracting services will instantiate the objects.
-        $this->loadConfig('define');
-        
-        // serialize it and write to file
-        file_put_contents($file, $this->di->getSerialized());
-    }
-    
-    protected function getCacheContainerFile()
-    {
-        $mode = $this->project->getMode();
-        return $this->project->getTmpPath("cache/di/{$mode}.serial");
     }
 }
