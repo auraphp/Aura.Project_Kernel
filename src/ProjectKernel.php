@@ -56,7 +56,7 @@ class ProjectKernel
     
     /**
      * 
-     * Has $packages been loaded from Composer?
+     * Have packages been loaded from Composer?
      * 
      * @var bool
      * 
@@ -79,15 +79,9 @@ class ProjectKernel
      * 
      * @param Project $project A project information object.
      * 
-     * @param ClassLoader $loader An autoloader, typically the Composer
-     * autoloader. This will be retained in the DI container as a service
-     * named 'loader'.
-     * 
      * @param ContainerInterface $di A dependency injection container.
      * 
-     * @param string $base The base directory for the project.
-     * 
-     * @param string $mode The config mode.
+     * @param Includer $includer An Includer prototype.
      * 
      */
     public function __construct(
@@ -119,7 +113,7 @@ class ProjectKernel
     /**
      * 
      * Reads all the config files for a stage in the current mode, then caches
-     * them as a single file.
+     * them as a single file; call this *instead of* __invoke().
      * 
      * @param string $stage The configuration stage: 'define' or 'modify'.
      * 
@@ -267,8 +261,7 @@ class ProjectKernel
     
     /**
      * 
-     * Reads the config files for each of the Aura-style packages; call this
-     * *instead of* __invoke().
+     * Reads the config files for each of the Aura-style packages.
      * 
      * @param string $stage The configuration stage: 'define' or 'modify'.
      * 
