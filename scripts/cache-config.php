@@ -10,6 +10,6 @@
  * @var Aura\Project_Kernel\ProjectKernel $project_kernel
  * 
  */
-include __DIR__ . '/kernel.php';
+$project_kernel = require __DIR__ . '/kernel.php';
 $project_kernel->cacheConfig('define');
 $project_kernel->cacheConfig('modify');

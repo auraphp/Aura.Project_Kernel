@@ -7,24 +7,22 @@
  * 
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
+ * @var string $base The base directory.
+ * 
  */
 namespace Aura\Project_Kernel;
 
 // the project base directory, relative to
 // {$project}/vendor/aura/project-kernel/scripts/kernel.php
-$base = dirname(dirname(dirname(dirname(__DIR__))));
-
-// the project config mode
-$file = str_replace("/", DIRECTORY_SEPARATOR, "{$base}/config/_mode");
-$mode = trim(file_get_contents($file));
-if (! $mode) {
-    $mode = "default";
+if (! isset($base)) {
+    $base = dirname(dirname(dirname(dirname(__DIR__))));
 }
 
-// composer autoloader, add project src/ directory
-$loader = require "{$base}/vendor/autoload.php";
-$loader->add('', "{$base}/src");
+// load any $_ENV changes
+require "{$base}/config/_env.php";
 
-// create project kernel, and done
-$project_kernel_factory = new ProjectKernelFactory;
-$project_kernel = $project_kernel_factory->newInstance($base, $mode, $loader);
+// load the kernel factory
+require "{$base}/vendor/aura/project-kernel/src/ProjectKernelFactory.php";
+
+// return a new project kernel
+return ProjectKernelFactory::newInstance($base, $_ENV);
