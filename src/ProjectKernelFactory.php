@@ -12,12 +12,12 @@ namespace Aura\Project_Kernel;
 
 use Aura\Di\Config;
 use Aura\Di\Container;
-use Aura\Di\Lazy\LazyFactory;
+use Aura\Di\Factory;
 use Aura\Includer\Includer;
 
 /**
  * 
- * Factory for project kernel objects.
+ * Factory to create a project kernel object.
  * 
  * @package Aura.Project_Kernel
  * 
@@ -26,29 +26,36 @@ class ProjectKernelFactory
 {
     /**
      * 
-     * Returns a new project kernel instance.
+     * Factory Method to create a new instance of a project kernel.
+     * 
+     * I don't like statics, or the use of `require` to get the autoloader,
+     * but this is the most straightforward way to 
+     * make the functionality available to a bootstrap script without
+     * introducing extra global variables. Tradeoffs, tradeoffs.
      * 
      * @param string $base The project base directory.
      * 
-     * @param string $mode The project config mode.
-     * 
-     * @param object $loader The Composer autoloader.
-     * 
-     * @return ProjectKernel
+     * @param array $env A copy of $_ENV.
      * 
      */
-    public function newInstance($base, $mode, $loader)
+    public static function newInstance($base, $env)
     {
-        // objects for kernel instance
-        $project  = new Project($base, $mode);
-        $di       = new Container(new Config, new LazyFactory);
-        $includer = new Includer;
-        
-        // set project and loader into the container
-        $di->set('project', $project);
+        // get composer autoloader and add project src/ directory
+        $loader = require "{$base}/vendor/autoload.php";
+        $loader->add('', "{$base}/src");
+
+        // create the project info object
+        $project = new Project($base, $env);
+
+        // create the di container, add project and loader
+        $di = new Container(new Config, new Factory);
         $di->set('loader', $loader);
-        
-        // return the new kernel instance
+        $di->set('project', $project);
+
+        // an Includer prototype
+        $includer = new Includer;
+
+        // create and invoke the kernel
         return new ProjectKernel($project, $di, $includer);
     }
 }
