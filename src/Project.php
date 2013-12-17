@@ -43,13 +43,15 @@ class Project
      * 
      * @param string $base The base directory.
      * 
-     * @param string $mode The config mode.
+     * @param array $env A copy of $_ENV.
      * 
      */
-    public function __construct($base, $mode = 'default')
+    public function __construct($base, array $env)
     {
         $this->base = rtrim($base, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-        $this->mode = $mode;
+        $this->mode = isset($env['AURA_CONFIG_MODE'])
+                    ? $env['AURA_CONFIG_MODE']
+                    : 'default';
     }
 
     /**
