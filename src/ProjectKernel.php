@@ -287,7 +287,7 @@ class ProjectKernel
      * @return string The cache file path.
      * 
      */
-    protected function getCacheConfigFile($stage)
+    public function getCacheConfigFile($stage)
     {
         $mode = $this->project->getMode();
         return $this->project->getTmpPath("cache/config/{$mode}/{$stage}.php");
