@@ -184,7 +184,7 @@ class ProjectKernel
      * @return Includer
      * 
      */
-    protected function getIncluder($stage)
+    protected function newIncluder($stage)
     {
         // the project config mode
         $mode = $this->project->getMode();
@@ -253,7 +253,7 @@ class ProjectKernel
      */
     protected function loadConfig($stage)
     {
-        $includer = $this->getIncluder($stage);
+        $includer = $this->newIncluder($stage);
         $includer->load();
         $this->addDebug($includer->getDebug());
     }
@@ -269,7 +269,7 @@ class ProjectKernel
      */
     protected function readConfig($stage)
     {
-        $includer = $this->getIncluder($stage);
+        $includer = $this->newIncluder($stage);
         $code = '<?php /** '
               . date('Y-m-d H:i:s')
               . ' */' . PHP_EOL . PHP_EOL
