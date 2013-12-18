@@ -148,18 +148,6 @@ class ProjectKernel
     
     /**
      * 
-     * Returns the collected debug messages.
-     * 
-     * @return array
-     * 
-     */
-    public function getDebug()
-    {
-        return $this->debug;
-    }
-    
-    /**
-     * 
      * Adds to the debug messages.
      * 
      * @param array|string $debug The additional debug messages.
