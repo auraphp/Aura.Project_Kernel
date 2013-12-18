@@ -129,16 +129,16 @@ class Project
 
     /**
      * 
-     * Gets the tmp path, along with an optional subdirectory path.
+     * Gets the CLI path, along with an optional subdirectory path.
      * 
      * @param string $sub An optional subdirectory path.
      * 
      * @return The full directory path, with proper directory separators.
      * 
      */
-    public function getTmpPath($sub = null)
+    public function getCliPath($sub = null)
     {
-        return $this->getSubPath('tmp' . DIRECTORY_SEPARATOR, $sub);
+        return $this->getSubPath('cli' . DIRECTORY_SEPARATOR, $sub);
     }
 
     /**
@@ -167,6 +167,20 @@ class Project
     public function getSrcPath($sub = null)
     {
         return $this->getSubPath('src' . DIRECTORY_SEPARATOR, $sub);
+    }
+
+    /**
+     * 
+     * Gets the tmp path, along with an optional subdirectory path.
+     * 
+     * @param string $sub An optional subdirectory path.
+     * 
+     * @return The full directory path, with proper directory separators.
+     * 
+     */
+    public function getTmpPath($sub = null)
+    {
+        return $this->getSubPath('tmp' . DIRECTORY_SEPARATOR, $sub);
     }
 
     /**
