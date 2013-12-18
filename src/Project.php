@@ -39,19 +39,32 @@ class Project
 
     /**
      * 
+     * The Composer 'installed' data.
+     * 
+     * @var array
+     * 
+     */
+    protected $installed;
+
+    /**
+     * 
      * Constructor.
      * 
      * @param string $base The base directory.
      * 
      * @param array $env A copy of $_ENV.
      * 
+     * @param array $installed A decoded version of the Composer 'installed'
+     * data.
+     * 
      */
-    public function __construct($base, array $env)
+    public function __construct($base, array $env, $installed)
     {
         $this->base = rtrim($base, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
         $this->mode = isset($env['AURA_CONFIG_MODE'])
                     ? $env['AURA_CONFIG_MODE']
                     : 'default';
+        $this->installed = $installed;
     }
 
     /**
@@ -86,6 +99,18 @@ class Project
     public function getMode()
     {
         return $this->mode;
+    }
+    
+    /**
+     * 
+     * Returns the Composer 'installed' data.
+     * 
+     * @return array
+     * 
+     */
+    public function getInstalled()
+    {
+        return $this->installed;
     }
     
     /**
