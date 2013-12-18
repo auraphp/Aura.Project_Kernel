@@ -33,6 +33,15 @@ class ProjectKernel
     
     /**
      * 
+     * An Includer prototype.
+     * 
+     * @var Includer
+     * 
+     */
+    protected $includer;
+    
+    /**
+     * 
      * Information about the project.
      * 
      * @var Project
@@ -52,16 +61,8 @@ class ProjectKernel
     protected $packages = array(
         'library' => array(),
         'kernel' => array(),
+        'bundle' => array(),
     );
-    
-    /**
-     * 
-     * Have packages been loaded from Composer?
-     * 
-     * @var bool
-     * 
-     */
-    protected $packages_loaded = false;
     
     /**
      * 
@@ -98,15 +99,17 @@ class ProjectKernel
      * 
      * Invokes the kernel (i.e., runs it).
      * 
-     * @return null
+     * @return ContainerInterface The DI container after setup.
      * 
      */
     public function __invoke()
     {
         $this->addDebug(__METHOD__);
+        $this->setPackages();
         $this->loadConfig('define');
         $this->di->lock();
         $this->loadConfig('modify');
+        $this->logDebug();
         return $this->di;
     }
     
@@ -171,6 +174,21 @@ class ProjectKernel
     
     /**
      * 
+     * Send the debug messages to the logger.
+     * 
+     * @return null
+     * 
+     */
+    protected function logDebug()
+    {
+        $logger = $this->di->get('logger');
+        foreach ($this->debug as $message) {
+            $logger->debug($message);
+        }
+    }
+    
+    /**
+     * 
      * Returns a cloned includer for the config mode and stage.
      * 
      * @param string $stage The configuration stage: 'define' or 'modify'.
@@ -180,11 +198,6 @@ class ProjectKernel
      */
     protected function getIncluder($stage)
     {
-        // load $packages from composer if needed
-        if (! $this->packages_loaded) {
-            $this->loadPackages();
-        }
-        
         // the project config mode
         $mode = $this->project->getMode();
         
@@ -228,10 +241,9 @@ class ProjectKernel
      * @return null
      * 
      */
-    protected function loadPackages()
+    protected function setPackages()
     {
-        $file = $this->project->getVendorPath('composer/installed.json');
-        $installed = json_decode(file_get_contents($file));
+        $installed = $this->project->getInstalled();
         foreach ($installed as $package) {
             if (! isset($package->extra->aura->type)) {
                 continue;
@@ -240,7 +252,6 @@ class ProjectKernel
             $dir = $this->project->getVendorPath($package->name);
             $this->packages[$type][$package->name] = $dir;
         }
-        $this->packages_loaded = true;
     }
     
     /**
