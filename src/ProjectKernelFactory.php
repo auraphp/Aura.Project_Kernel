@@ -44,8 +44,12 @@ class ProjectKernelFactory
         $loader = require "{$base}/vendor/autoload.php";
         $loader->add('', "{$base}/src");
 
+        // get the composer json for installed packages
+        $file = "{$base}/vendor/composer/installed.json";
+        $installed = json_decode(file_get_contents($file));
+        
         // create the project info object
-        $project = new Project($base, $env);
+        $project = new Project($base, $env, $installed);
 
         // create the di container, add project and loader
         $di = new Container(new Config, new Factory);
