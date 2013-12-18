@@ -84,7 +84,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expect, $actual);
     }
     
-    public function getCliPath()
+    public function testGetCliPath()
     {
         $expect = '/path/to/project/cli/';
         $actual = $this->project->getCliPath();
