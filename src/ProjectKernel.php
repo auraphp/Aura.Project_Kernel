@@ -126,12 +126,6 @@ class ProjectKernel
     public function cacheConfig($stage)
     {
         $file = $this->getCacheConfigFile($stage);
-        if (file_exists($file)) {
-            $this->addDebug("Cache config: unlink $file");
-            unlink($file);
-        } else {
-            $this->addDebug("Cache config: no file $file");
-        }
         
         $dir = dirname($file);
         if (! is_dir($dir)) {

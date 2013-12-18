@@ -24,15 +24,29 @@ class ProjectKernelTest extends \PHPUnit_Framework_TestCase
         $env['AURA_CONFIG_MODE'] = 'integration';
         $base = $this->getBase();
         $this->project_kernel = ProjectKernelFactory::newInstance($base, $env);
-        
         $this->cache_define = "{$base}/tmp/cache/config/integration/define.php";
+        $this->cache_modify = "{$base}/tmp/cache/config/integration/modify.php";
+        $this->clearCacheConfig();
+    }
+    
+    protected function tearDown()
+    {
+        $this->clearCacheConfig();
+    }
+    
+    protected function clearCacheConfig()
+    {
         if (file_exists($this->cache_define)) {
             unlink($this->cache_define);
         }
         
-        $this->cache_modify = "{$base}/tmp/cache/config/integration/modify.php";
         if (file_exists($this->cache_modify)) {
             unlink($this->cache_modify);
+        }
+        
+        $cache_dir = dirname($this->cache_modify);
+        if (is_dir($cache_dir)) {
+            rmdir($cache_dir);
         }
     }
     
