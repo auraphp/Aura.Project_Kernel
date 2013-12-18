@@ -8,7 +8,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $env = $_ENV;
-        $env['AURA_CONFIG_MODE'] = 'test';
+        $env['AURA_CONFIG_MODE'] = 'integration';
         
         $base = '/path/to/project';
         
@@ -23,7 +23,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     
     public function testGetMode()
     {
-        $expect = 'test';
+        $expect = 'integration';
         $actual = $this->project->getMode();
         $this->assertSame($expect, $actual);
     }
