@@ -2,6 +2,7 @@ language: php
 php:
   - 5.4
   - 5.5
+  - hhvm
 before_script:
   - composer create-project aura/cli-project --prefer-dist --stability=dev
   - rm -rf cli-project/vendor/aura/project-kernel/*
