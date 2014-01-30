@@ -10,7 +10,6 @@
  */
 namespace Aura\Project_Kernel;
 
-use Aura\Di\Config;
 use Aura\Di\Container;
 use Aura\Di\Factory;
 use Aura\Includer\Includer;
@@ -51,7 +50,7 @@ class ProjectContainer
         $project = new Project($base, $env, $installed);
         
         // create the container and set services
-        $di = new Container(new Config, new Factory);
+        $di = new Container(new Factory);
         $di->set('loader', $loader);
         $di->set('project', $project);
         
