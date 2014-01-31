@@ -1,3 +1,4 @@
+composer self-update
 if [ -d cli-project ]
 then
     cd cli-project
