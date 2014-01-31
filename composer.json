@@ -18,7 +18,9 @@
         "monolog/monolog": "1.*"
     },
     "autoload": {
-        "files": ["autoload.php"]
+        "psr-4": {
+            "Aura\\Project_Kernel\\": "src/"
+        }
     },
     "extra": {
         "aura": {
