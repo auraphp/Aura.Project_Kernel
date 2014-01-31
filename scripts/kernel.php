@@ -13,10 +13,11 @@
  */
 use Aura\Project_Kernel\ProjectContainer;
 
-// the project base directory
-$base = dirname(__DIR__);
+// the project base directory relative to
+// {$base}/vendor/aura/project-kernel/scripts/kernel.php
+$base = dirname(dirname(dirname(dirname(__DIR__))));
 
-// set up autoloader
+// set up the autoloader
 $loader = require "$base/vendor/autoload.php";
 
 // load environment modifications
