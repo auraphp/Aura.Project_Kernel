@@ -17,4 +17,6 @@ cp -r src           cli-project/vendor/aura/project-kernel/
 cp -r tests         cli-project/vendor/aura/project-kernel/
 cd cli-project/vendor/aura/project-kernel/tests
 phpunit
+status=$?
 cd ../../../..
+exit $status
