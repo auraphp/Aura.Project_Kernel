@@ -21,12 +21,39 @@ class Project
 {
     /**
      * 
-     * The base directory.
+     * The path to the project root directory.
      * 
      * @var string
      * 
      */
-    protected $base;
+    protected $path;
+
+    /**
+     * 
+     * The 'composer.json' data.
+     * 
+     * @var array
+     * 
+     */
+    protected $composer;
+
+    /**
+     * 
+     * The array of classes to be used for the configuration mode.
+     * 
+     * @var array
+     * 
+     */
+    protected $config_classes;
+
+    /**
+     * 
+     * The 'vendor/composer/installed.json' data.
+     * 
+     * @var array
+     * 
+     */
+    protected $installed;
 
     /**
      * 
@@ -39,54 +66,47 @@ class Project
 
     /**
      * 
-     * The Composer 'installed' data.
-     * 
-     * @var array
-     * 
-     */
-    protected $installed;
-
-    /**
-     * 
      * Constructor.
      * 
-     * @param string $base The base directory.
+     * @param string $path The path to the project root directory.
      * 
-     * @param array $env A copy of $_ENV.
+     * @param string $mode The project configuration mode.
      * 
-     * @param array $installed A decoded version of the Composer 'installed'
-     * data.
+     * @param object $composer The 'composer.json' data.
+     * 
+     * @param array $installed The 'vendor/composer/installed.json' data.
      * 
      */
-    public function __construct($base, array $env, $installed)
+    public function __construct($path, $mode, $composer, array $installed)
     {
-        $this->base = rtrim($base, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-        $this->mode = isset($env['AURA_CONFIG_MODE'])
-                    ? $env['AURA_CONFIG_MODE']
-                    : 'default';
+        $this->path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+        $this->mode = $mode;
+
+        if (! is_object($composer)) {
+            throw new Exception('The "composer.json" data is not an object.');
+        }
+        $this->composer = $composer;
+
         $this->installed = $installed;
     }
 
     /**
      * 
-     * Gets the path for any directory, along with an optional subdirectory
-     * path.
+     * Gets the path to the project root, with an optional subpath.
      * 
-     * @param string $dir The directory name to get the path for.
+     * @param string $sub An optional subpath.
      * 
-     * @param string $sub An optional subdirectory path.
-     * 
-     * @return The full directory path, with proper directory separators.
+     * @return The full path, with proper directory separators.
      * 
      */
-    protected function getSubPath($dir, $sub = null)
+    public function getPath($sub = null)
     {
-        $path = $this->base . $dir;
         if ($sub) {
             $sub = ltrim($sub, DIRECTORY_SEPARATOR);
-            $path .= str_replace('/', DIRECTORY_SEPARATOR, $sub);
+            return $this->path . str_replace('/', DIRECTORY_SEPARATOR, $sub);
+        } else {
+            return $this->path;
         }
-        return $path;
     }
 
     /**
@@ -103,7 +123,19 @@ class Project
     
     /**
      * 
-     * Returns the Composer 'installed' data.
+     * Returns the 'composer.json' data.
+     * 
+     * @return array
+     * 
+     */
+    public function getComposer()
+    {
+        return $this->composer;
+    }
+
+    /**
+     * 
+     * Returns the 'vendor/composer/installed.json' data.
      * 
      * @return array
      * 
@@ -115,99 +147,78 @@ class Project
     
     /**
      * 
-     * Gets the base path, along with an optional subdirectory path.
+     * Returns the list of classes recognized in the project as Aura configs.
      * 
-     * @param string $sub An optional subdirectory path.
-     * 
-     * @return The full directory path, with proper directory separators.
+     * @return array
      * 
      */
-    public function getBasePath($sub = null)
+    public function getConfigClasses()
     {
-        return $this->getSubPath('', $sub);
+        if ($this->config_classes === null) {
+            $this->setConfigClasses();
+        }
+
+        return $this->config_classes;
     }
 
     /**
      * 
-     * Gets the CLI path, along with an optional subdirectory path.
+     * Sets the list of config classes by examining the `$composer` and
+     * `$installed` data objects.
      * 
-     * @param string $sub An optional subdirectory path.
-     * 
-     * @return The full directory path, with proper directory separators.
+     * @return null
      * 
      */
-    public function getCliPath($sub = null)
+    protected function setConfigClasses()
     {
-        return $this->getSubPath('cli' . DIRECTORY_SEPARATOR, $sub);
+        $this->config_classes = array(
+            'library' => array(),
+            'kernel' => array(),
+            'project' => array(),
+        );
+
+        foreach ($this->installed as $package) {
+            $this->addConfigClasses($package);
+        }
+
+        $this->addConfigClasses($this->composer);
+
+        $this->config_classes = array_merge(
+            $this->config_classes['library'],
+            $this->config_classes['kernel'],
+            $this->config_classes['project']
+        );
     }
 
     /**
      * 
-     * Gets the config path, along with an optional subdirectory path.
+     * Adds any config classes recognized in the specification.
      * 
-     * @param string $sub An optional subdirectory path.
+     * @param object $spec A data object from `$composer` or `$installed`.
      * 
-     * @return The full directory path, with proper directory separators.
+     * @return null
      * 
      */
-    public function getConfigPath($sub = null)
+    protected function addConfigClasses($spec)
     {
-        return $this->getSubPath('config' . DIRECTORY_SEPARATOR, $sub);
-    }
+        if (! isset($spec->extra->aura->config)) {
+            return;
+        }
 
-    /**
-     * 
-     * Gets the source path, along with an optional subdirectory path.
-     * 
-     * @param string $sub An optional subdirectory path.
-     * 
-     * @return The full directory path, with proper directory separators.
-     * 
-     */
-    public function getSrcPath($sub = null)
-    {
-        return $this->getSubPath('src' . DIRECTORY_SEPARATOR, $sub);
-    }
+        $config = $spec->extra->aura->config;
 
-    /**
-     * 
-     * Gets the tmp path, along with an optional subdirectory path.
-     * 
-     * @param string $sub An optional subdirectory path.
-     * 
-     * @return The full directory path, with proper directory separators.
-     * 
-     */
-    public function getTmpPath($sub = null)
-    {
-        return $this->getSubPath('tmp' . DIRECTORY_SEPARATOR, $sub);
-    }
+        $type = isset($spec->extra->aura->type)
+              ? $spec->extra->aura->type
+              : 'library';
 
-    /**
-     * 
-     * Gets the vendor path, along with an optional subdirectory path.
-     * 
-     * @param string $sub An optional subdirectory path.
-     * 
-     * @return The full directory path, with proper directory separators.
-     * 
-     */
-    public function getVendorPath($sub = null)
-    {
-        return $this->getSubPath('vendor' . DIRECTORY_SEPARATOR, $sub);
-    }
+        $mode = $this->mode;
+        
+        if (isset($config->common)) {
+            $this->config_classes[$type][] = $config->common;
+        }
 
-    /**
-     * 
-     * Gets the web path, along with an optional subdirectory path.
-     * 
-     * @param string $sub An optional subdirectory path.
-     * 
-     * @return The full directory path, with proper directory separators.
-     * 
-     */
-    public function getWebPath($sub = null)
-    {
-        return $this->getSubPath('web' . DIRECTORY_SEPARATOR, $sub);
+        if (isset($config->$mode)) {
+            $this->config_classes[$type][] = $config->$mode;
+        }
     }
 }

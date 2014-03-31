@@ -1,0 +1,5 @@
+{
+    "require": {
+        "aura/di": "2.*@dev"
+    }
+}

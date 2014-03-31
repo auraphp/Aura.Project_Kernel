@@ -5,89 +5,169 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
 {
     protected $project;
     
+    protected $path = '/path/to/project';
+
+    protected $mode = 'dev';
+
+    protected $composer = '{
+        "name": "vendor/package",
+        "type": "library",
+        "extra": {
+            "aura": {
+                "type": "project",
+                "config": {
+                    "common": "ApplicationConfigCommon",
+                    "dev": "ApplicationConfigDev"
+                }
+            }
+        }
+    }';
+
+    protected $installed = '[
+        {
+            "name": "aura/web",
+            "description": "type, without config",
+            "extra": {
+                "aura": {
+                    "type": "library"
+                }
+            }
+        },
+        {
+            "name": "aura/di",
+            "description": "config, without type",
+            "extra": {
+                "aura": {
+                    "config": {
+                        "common": "DiConfigCommon"
+                    }
+                }
+            }
+        },
+        {
+            "name": "aura/project-kernel",
+            "description": "kernel common and test config",
+            "extra": {
+                "aura": {
+                    "type": "kernel",
+                    "config": {
+                        "common": "ProjectKernelConfigCommon",
+                        "test": "ProjectKernelConfigTest"
+                    }
+                }
+            }
+        },
+        {
+            "name": "aura/dispatcher",
+            "description": "dev config only",
+            "extra": {
+                "aura": {
+                    "type": "library",
+                    "config": {
+                        "dev": "DispatcherConfigDev"
+                    }
+                }
+            }
+        },
+        {
+            "name": "aura/web-kernel",
+            "description": "kernel config",
+            "extra": {
+                "aura": {
+                    "type": "kernel",
+                    "config": {
+                        "common": "WebKernelConfigCommon"
+                    }
+                }
+            }
+        },
+        {
+            "name": "aura/router",
+            "description": "common and dev config",
+            "extra": {
+                "aura": {
+                    "type": "library",
+                    "config": {
+                        "common": "RouterConfigCommon",
+                        "dev": "RouterConfigDev"
+                    }
+                }
+            }
+        },
+        {
+            "name": "vendor/package",
+            "description": "non-aura package"
+        }
+    ]';
+
     protected function setUp()
     {
-        $env = $_ENV;
-        $env['AURA_CONFIG_MODE'] = 'integration';
-        
-        $base = '/path/to/project';
-        
-        $installed = array(
-            'fake/project-1',
-            'fake/project-2',
-            'fake/project-3',
+        $this->composer = json_decode($this->composer);
+        $this->installed = json_decode($this->installed);
+        $this->project = new Project(
+            $this->path,
+            $this->mode,
+            $this->composer,
+            $this->installed
         );
+    }
+    
+    public function testNoComposer()
+    {
+        $this->setExpectedException('Aura\Project_Kernel\Exception');
+        $this->project = new Project(
+            $this->path,
+            $this->mode,
+            null,
+            array()
+        );
+    }
+
+    public function testGetPath()
+    {
+        $expect = $this->path . DIRECTORY_SEPARATOR;
+        $actual = $this->project->getPath();
+        $this->assertSame($expect, $actual);
         
-        $this->project = new Project($base, $env, $installed);
+        $expect = $this->path . '/foo/bar/baz.txt';
+        $actual = $this->project->getPath('foo/bar/baz.txt');
+        $this->assertSame($expect, $actual);
     }
     
     public function testGetMode()
     {
-        $expect = 'integration';
+        $expect = $this->mode;
         $actual = $this->project->getMode();
         $this->assertSame($expect, $actual);
     }
     
     public function testGetInstalled()
     {
-        $expect = array(
-            'fake/project-1',
-            'fake/project-2',
-            'fake/project-3',
-        );
+        $expect = $this->installed;
         $actual = $this->project->getInstalled();
-    }
-    
-    public function testGetBasePath()
-    {
-        $expect = '/path/to/project/';
-        $actual = $this->project->getBasePath();
-        $this->assertSame($expect, $actual);
-        
-        $expect = '/path/to/project/foo/bar/baz.txt';
-        $actual = $this->project->getBasePath('foo/bar/baz.txt');
         $this->assertSame($expect, $actual);
     }
     
-    public function testGetTmpPath()
+    public function testGetComposer()
     {
-        $expect = '/path/to/project/tmp/';
-        $actual = $this->project->getTmpPath();
+        $expect = $this->composer;
+        $actual = $this->project->getComposer();
         $this->assertSame($expect, $actual);
     }
-    
-    public function testGetConfigPath()
+
+    public function testGetConfigClasses()
     {
-        $expect = '/path/to/project/config/';
-        $actual = $this->project->getConfigPath();
-        $this->assertSame($expect, $actual);
-    }
-    
-    public function testGetSrcPath()
-    {
-        $expect = '/path/to/project/src/';
-        $actual = $this->project->getSrcPath();
-        $this->assertSame($expect, $actual);
-    }
-    
-    public function testGetVendorPath()
-    {
-        $expect = '/path/to/project/vendor/';
-        $actual = $this->project->getVendorPath();
-        $this->assertSame($expect, $actual);
-    }
-    
-    public function testGetWebPath()
-    {
-        $expect = '/path/to/project/web/';
-        $actual = $this->project->getWebPath();
-        $this->assertSame($expect, $actual);
-    }
-    
-    public function testGetCliPath()
-    {
-        $expect = '/path/to/project/cli/';
-        $actual = $this->project->getCliPath();
+        $expect = array(
+            0 => 'DiConfigCommon',
+            1 => 'DispatcherConfigDev',
+            2 => 'RouterConfigCommon',
+            3 => 'RouterConfigDev',
+            4 => 'ProjectKernelConfigCommon',
+            5 => 'WebKernelConfigCommon',
+            6 => 'ApplicationConfigCommon',
+            7 => 'ApplicationConfigDev',
+        );
+        $actual = $this->project->getConfigClasses();
         $this->assertSame($expect, $actual);
     }
 }
