@@ -4,4 +4,6 @@ php:
   - 5.4
   - 5.5
   - hhvm
-script: tests/integration.sh
+before_script:
+  - cd tests
+script: integration.sh
