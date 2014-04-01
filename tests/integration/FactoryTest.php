@@ -7,7 +7,8 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     {
         $path = __DIR__;
         $mode = 'integration';
-        $di = (new Factory)->newContainer(
+        $di_factory = new Factory();
+        $di = $di_factory->newContainer(
             $path,
             $mode,
             "$path/composer.json",
