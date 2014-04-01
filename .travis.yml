@@ -6,4 +6,4 @@ php:
   - hhvm
 before_script:
   - cd tests
-script: integration.sh
+script: ./integration.sh
