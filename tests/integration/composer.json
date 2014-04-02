@@ -1,4 +1,5 @@
 {
+    "minimum-stability": "dev",
     "require": {
         "aura/di": "2.*@dev"
     }
