@@ -19,7 +19,7 @@
     "autoload": {
         "psr-4": {
             "Aura\\Project_Kernel\\": "src/",
-            "Aura\\Project_Kernel\\_Config\\": "src/"
+            "Aura\\Project_Kernel\\_Config\\": "config/"
         }
     },
     "extra": {
