@@ -8,6 +8,6 @@ class Common extends Config
 {
     public function define(Container $di)
     {
-        $di->set('logger', $di->lazyNew('Aura\Project_Kernel\Logger'));
+        $di->set('logger', $di->lazyNew('Psr\Log\NullLogger'));
     }
 }
