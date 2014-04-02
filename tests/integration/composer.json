@@ -1,6 +1,32 @@
 {
-    "minimum-stability": "dev",
+    "name": "aura/project-kernel",
+    "type": "library",
+    "description": "The shared kernel files for an Aura project.",
+    "keywords": ["project", "kernel"],
+    "homepage": "http://auraphp.com/package/Aura.Project_Kernel",
+    "license": "BSD-2-Clause",
+    "authors": [
+        {
+            "name": "Aura.Project_Kernel Contributors",
+            "homepage": "https://github.com/auraphp/Aura.Project_Kernel/contributors"
+        }
+    ],
     "require": {
-        "aura/di": "2.*@dev"
+        "php": ">=5.4.0",
+        "aura/di": "2.*@dev",
+        "psr/log": "1.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Aura\\Project_Kernel\\": "src/"
+        }
+    },
+    "extra": {
+        "aura": {
+            "type": "kernel"
+        },
+        "branch-alias": {
+            "dev-develop-2": "2.0.x-dev"
+        }
     }
 }

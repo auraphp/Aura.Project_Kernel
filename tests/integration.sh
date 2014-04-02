@@ -1,5 +1,6 @@
 cd integration
 composer self-update
+cp ../../composer.json .
 if [ -d vendor ]
 then
     composer update
