@@ -13,7 +13,8 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "aura/di": "2.*@dev"
+        "aura/di": "2.*@dev",
+        "psr/log": "1.*"
     },
     "autoload": {
         "psr-4": {
