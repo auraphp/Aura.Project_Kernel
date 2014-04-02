@@ -23,6 +23,35 @@ class Factory
 {
     /**
      * 
+     * Returns a new project kernel object.
+     * 
+     * There are two violations in this method. First, we require a file inside
+     * the method scope. Second, we use a superglobal directly. These are
+     * directly related to the bootstrapping process and might be avoidable if
+     * we repeated the method as a separate script in each project. Tradeoffs,
+     * tradeoffs.
+     * 
+     * @param string $path The path to the project root directory.
+     * 
+     * @param string $class The kernel class.
+     * 
+     * @return object An instance of the kernel class.
+     * 
+     */
+    public function newKernel($path, $class)
+    {
+        require "{$path}/config/_env.php";
+        $di = $this->newContainer(
+            $path,
+            $_ENV['AURA_CONFIG_MODE'],
+            "{$path}/composer.json",
+            "{$path}/vendor/composer/installed.json"
+        );
+        return $di->newInstance($class);
+    }
+
+    /**
+     * 
      * Creates and returns a new Container for the project.
      * 
      * @param string $path The path to the project root directory.
