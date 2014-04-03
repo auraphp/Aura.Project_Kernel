@@ -46,9 +46,9 @@ you notice compliance oversights, please send a patch via pull request.
 
 To ask questions, provide feedback, or otherwise communicate with the Aura community, please join our [Google Group](http://groups.google.com/group/auraphp), follow [@auraphp on Twitter](http://twitter.com/auraphp), or chat with us on #auraphp on Freenode.
 
-## Services
+### Services
 
-This kernel defines the following services in the _Container_:
+This package defines the following services in the _Container_:
 
 - `logger`: an instance of _Psr\Log\NullLogger_
 
