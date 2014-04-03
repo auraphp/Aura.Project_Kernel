@@ -1,2 +1,2 @@
-tests/integration/vendor
-tests/integration/composer.lock
+tests/kernel/vendor
+tests/kernel/composer.lock
