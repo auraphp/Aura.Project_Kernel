@@ -46,6 +46,14 @@ you notice compliance oversights, please send a patch via pull request.
 
 To ask questions, provide feedback, or otherwise communicate with the Aura community, please join our [Google Group](http://groups.google.com/group/auraphp), follow [@auraphp on Twitter](http://twitter.com/auraphp), or chat with us on #auraphp on Freenode.
 
+## Services
+
+This kernel defines the following services in the _Container_:
+
+- `logger`: an instance of _Psr\Log\NullLogger_
+
+Note that service definitions set at the kernel level may be reset at the project level.
+
 ## Configuration
 
 Although configuration is a project-level concern, each Aura kernel and project handles it in the same way. Thus, we provide config documentation here to reduce repetition.
