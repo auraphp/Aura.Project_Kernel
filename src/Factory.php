@@ -88,6 +88,12 @@ class Factory
      * 
      * @param string $mode The project configuration mode.
      * 
+     * @param string $composer_file The full path to the project-level
+     * `composer.json` file.
+     * 
+     * @param string $installed_file The full path to the project-level
+     * `vendor/composer/installed.json` file.
+     * 
      * @return Container
      * 
      */
@@ -104,6 +110,8 @@ class Factory
     /**
      * 
      * Reads a JSON file and returns the decoded data.
+     * 
+     * @param string $file The `.json` file to read and decode.
      * 
      * @return mixed
      * 
