@@ -2,8 +2,11 @@
     "name": "aura/project-kernel",
     "type": "library",
     "description": "The shared kernel files for an Aura project.",
-    "keywords": ["project", "kernel"],
-    "homepage": "http://auraphp.com/package/Aura.Project_Kernel",
+    "keywords": [
+        "project",
+        "kernel"
+    ],
+    "homepage": "https://github.com/auraphp/Aura.Project_Kernel/releases",
     "license": "BSD-2-Clause",
     "authors": [
         {
