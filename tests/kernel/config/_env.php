@@ -1,3 +1,2 @@
 <?php
-$_ENV['AURA_CONFIG_MODE'] = 'integration';
-?>
+$_ENV['AURA_CONFIG_MODE'] = 'kernel';
