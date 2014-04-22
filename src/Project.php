@@ -75,7 +75,8 @@ class Project
      * @param object $composer The 'composer.json' data.
      * 
      * @param array $installed The 'vendor/composer/installed.json' data.
-     * 
+     *
+     * @throws Exception
      */
     public function __construct($path, $mode, $composer, array $installed)
     {
@@ -96,7 +97,7 @@ class Project
      * 
      * @param string $sub An optional subpath.
      * 
-     * @return The full path, with proper directory separators.
+     * @return string The full path, with proper directory separators.
      * 
      */
     public function getPath($sub = null)
