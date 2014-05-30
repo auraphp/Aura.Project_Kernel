@@ -4,7 +4,7 @@ namespace Aura\Project_Kernel;
 class ProjectTest extends \PHPUnit_Framework_TestCase
 {
     protected $project;
-    
+
     protected $path = '/path/to/project';
 
     protected $mode = 'dev';
@@ -111,7 +111,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
             $this->installed
         );
     }
-    
+
     public function testNoComposer()
     {
         $this->setExpectedException('Aura\Project_Kernel\Exception');
@@ -128,26 +128,26 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $expect = $this->path . DIRECTORY_SEPARATOR;
         $actual = $this->project->getPath();
         $this->assertSame($expect, $actual);
-        
+
         $expect = $this->path . '/foo/bar/baz.txt';
         $actual = $this->project->getPath('foo/bar/baz.txt');
         $this->assertSame($expect, $actual);
     }
-    
+
     public function testGetMode()
     {
         $expect = $this->mode;
         $actual = $this->project->getMode();
         $this->assertSame($expect, $actual);
     }
-    
+
     public function testGetInstalled()
     {
         $expect = $this->installed;
         $actual = $this->project->getInstalled();
         $this->assertSame($expect, $actual);
     }
-    
+
     public function testGetComposer()
     {
         $expect = $this->composer;

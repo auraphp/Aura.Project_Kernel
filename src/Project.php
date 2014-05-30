@@ -1,79 +1,79 @@
 <?php
 /**
- * 
+ *
  * This file is part of Aura for PHP.
- * 
+ *
  * @package Aura.Project_Kernel
- * 
+ *
  * @license http://opensource.org/licenses/bsd-license.php BSD
- * 
+ *
  */
 namespace Aura\Project_Kernel;
 
 /**
- * 
+ *
  * Project information.
- * 
+ *
  * @package Aura.Project_Kernel
- * 
+ *
  */
 class Project
 {
     /**
-     * 
+     *
      * The path to the project root directory.
-     * 
+     *
      * @var string
-     * 
+     *
      */
     protected $path;
 
     /**
-     * 
+     *
      * The 'composer.json' data.
-     * 
+     *
      * @var array
-     * 
+     *
      */
     protected $composer;
 
     /**
-     * 
+     *
      * The array of classes to be used for the configuration mode.
-     * 
+     *
      * @var array
-     * 
+     *
      */
     protected $config_classes;
 
     /**
-     * 
+     *
      * The 'vendor/composer/installed.json' data.
-     * 
+     *
      * @var array
-     * 
+     *
      */
     protected $installed;
 
     /**
-     * 
+     *
      * The config mode.
-     * 
+     *
      * @var string
-     * 
+     *
      */
     protected $mode;
 
     /**
-     * 
+     *
      * Constructor.
-     * 
+     *
      * @param string $path The path to the project root directory.
-     * 
+     *
      * @param string $mode The project configuration mode.
-     * 
+     *
      * @param object $composer The 'composer.json' data.
-     * 
+     *
      * @param array $installed The 'vendor/composer/installed.json' data.
      *
      * @throws Exception
@@ -92,13 +92,13 @@ class Project
     }
 
     /**
-     * 
+     *
      * Gets the path to the project root, with an optional subpath.
-     * 
+     *
      * @param string $sub An optional subpath.
-     * 
+     *
      * @return string The full path, with proper directory separators.
-     * 
+     *
      */
     public function getPath($sub = null)
     {
@@ -111,23 +111,23 @@ class Project
     }
 
     /**
-     * 
+     *
      * Gets the config mode.
-     * 
+     *
      * @return string The operational mode.
-     * 
+     *
      */
     public function getMode()
     {
         return $this->mode;
     }
-    
+
     /**
-     * 
+     *
      * Returns the 'composer.json' data.
-     * 
+     *
      * @return array
-     * 
+     *
      */
     public function getComposer()
     {
@@ -135,23 +135,23 @@ class Project
     }
 
     /**
-     * 
+     *
      * Returns the 'vendor/composer/installed.json' data.
-     * 
+     *
      * @return array
-     * 
+     *
      */
     public function getInstalled()
     {
         return $this->installed;
     }
-    
+
     /**
-     * 
+     *
      * Returns the list of classes recognized in the project as Aura configs.
-     * 
+     *
      * @return array
-     * 
+     *
      */
     public function getConfigClasses()
     {
@@ -163,12 +163,12 @@ class Project
     }
 
     /**
-     * 
+     *
      * Sets the list of config classes by examining the `$composer` and
      * `$installed` data objects.
-     * 
+     *
      * @return null
-     * 
+     *
      */
     protected function setConfigClasses()
     {
@@ -192,13 +192,13 @@ class Project
     }
 
     /**
-     * 
+     *
      * Adds any config classes recognized in the specification.
-     * 
+     *
      * @param object $spec A data object from `$composer` or `$installed`.
-     * 
+     *
      * @return null
-     * 
+     *
      */
     protected function addConfigClasses($spec)
     {
@@ -213,7 +213,7 @@ class Project
               : 'library';
 
         $mode = $this->mode;
-        
+
         if (isset($config->common)) {
             $this->config_classes[$type][] = $config->common;
         }

@@ -11,7 +11,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
             __DIR__,
             'Aura\Project_Kernel\FakeKernel'
         );
-        
+
         $this->assertInstanceOf('Aura\Project_Kernel\FakeKernel', $kernel);
     }
 }
