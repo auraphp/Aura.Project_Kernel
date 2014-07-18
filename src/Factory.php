@@ -62,7 +62,7 @@ class Factory
      *
      * @param string $installed_file The path to the `installed.json` file.
      *
-     * @return Container
+     * @return \Aura\Di\Container
      *
      */
     public function newContainer($path, $mode, $composer_file, $installed_file)
@@ -94,7 +94,7 @@ class Factory
      * @param string $installed_file The full path to the project-level
      * `vendor/composer/installed.json` file.
      *
-     * @return Container
+     * @return Project
      *
      */
     public function newProject($path, $mode, $composer_file, $installed_file)
