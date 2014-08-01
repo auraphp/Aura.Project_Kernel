@@ -174,6 +174,7 @@ class Project
     {
         $this->config_classes = array(
             'library' => array(),
+            'bundle' => array(),
             'kernel' => array(),
             'project' => array(),
         );
@@ -186,6 +187,7 @@ class Project
 
         $this->config_classes = array_merge(
             $this->config_classes['library'],
+            $this->config_classes['bundle'],
             $this->config_classes['kernel'],
             $this->config_classes['project']
         );
