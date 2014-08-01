@@ -16,7 +16,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
             "aura": {
                 "type": "project",
                 "config": {
-                    "common": "ApplicationConfigCommon",
+                    "common": ["ApplicationConfigCommon", "ApplicationConfigAnotherCommon"],
                     "dev": "ApplicationConfigDev"
                 }
             }
@@ -179,7 +179,8 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
             5 => 'ProjectKernelConfigCommon',
             6 => 'WebKernelConfigCommon',
             7 => 'ApplicationConfigCommon',
-            8 => 'ApplicationConfigDev',
+            8 => 'ApplicationConfigAnotherCommon',
+            9 => 'ApplicationConfigDev',
         );
         $actual = $this->project->getConfigClasses();
         $this->assertSame($expect, $actual);
