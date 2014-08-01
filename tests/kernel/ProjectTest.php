@@ -45,6 +45,19 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
             }
         },
         {
+            "name": "some/bundle",
+            "description": "some bundle",
+            "extra": {
+                "aura": {
+                    "type": "bundle",
+                    "config": {
+                        "common": "SomeBundleConfigCommon",
+                        "test": "SomeBundleConfigTest"
+                    }
+                }
+            }
+        },
+        {
             "name": "aura/project-kernel",
             "description": "kernel common and test config",
             "extra": {
@@ -162,10 +175,11 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
             1 => 'DispatcherConfigDev',
             2 => 'RouterConfigCommon',
             3 => 'RouterConfigDev',
-            4 => 'ProjectKernelConfigCommon',
-            5 => 'WebKernelConfigCommon',
-            6 => 'ApplicationConfigCommon',
-            7 => 'ApplicationConfigDev',
+            4 => 'SomeBundleConfigCommon',
+            5 => 'ProjectKernelConfigCommon',
+            6 => 'WebKernelConfigCommon',
+            7 => 'ApplicationConfigCommon',
+            8 => 'ApplicationConfigDev',
         );
         $actual = $this->project->getConfigClasses();
         $this->assertSame($expect, $actual);
