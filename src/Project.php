@@ -238,10 +238,10 @@ class Project
      */
     protected function addConfigClassesToType($type, $classes)
     {
-        if (! is_array($classes)) {
+        if (is_string($classes)) {
             $classes = array($classes);
         }
 
-        $this->config_classes[$type] = array_merge($this->config_classes[$type], $classes);
+        $this->config_classes[$type] = array_merge($this->config_classes[$type], (array)$classes);
     }
 }
