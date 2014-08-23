@@ -220,7 +220,7 @@ class Project
             $this->addConfigClassesToType($type, $config->common);
         }
 
-        if (isset($config->$mode)) {
+        if ($mode !== 'common' && isset($config->$mode)) {
             $this->addConfigClassesToType($type, $config->$mode);
         }
     }
