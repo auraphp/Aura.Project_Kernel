@@ -174,6 +174,7 @@ class Project
     {
         $this->config_classes = array(
             'library' => array(),
+            'bundle' => array(),
             'kernel' => array(),
             'project' => array(),
         );
@@ -186,6 +187,7 @@ class Project
 
         $this->config_classes = array_merge(
             $this->config_classes['library'],
+            $this->config_classes['bundle'],
             $this->config_classes['kernel'],
             $this->config_classes['project']
         );
@@ -215,11 +217,31 @@ class Project
         $mode = $this->mode;
 
         if (isset($config->common)) {
-            $this->config_classes[$type][] = $config->common;
+            $this->addConfigClassesToType($type, $config->common);
         }
 
-        if (isset($config->$mode)) {
-            $this->config_classes[$type][] = $config->$mode;
+        if ($mode !== 'common' && isset($config->$mode)) {
+            $this->addConfigClassesToType($type, $config->$mode);
         }
+    }
+
+    /**
+     *
+     * Add a series of config classes to the given type array.
+     *
+     * @param string $type The type to add the configuration classes to
+     *
+     * @param array|string $classes A single class to add or an array of classes to add.
+     *
+     * @return null
+     *
+     */
+    protected function addConfigClassesToType($type, $classes)
+    {
+        if (is_string($classes)) {
+            $classes = array($classes);
+        }
+
+        $this->config_classes[$type] = array_merge($this->config_classes[$type], (array)$classes);
     }
 }
