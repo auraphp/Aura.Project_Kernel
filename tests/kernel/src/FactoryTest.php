@@ -8,7 +8,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $factory = new Factory;
 
         $kernel = $factory->newKernel(
-            __DIR__,
+            dirname(__DIR__),
             'Aura\Project_Kernel\FakeKernel'
         );
 

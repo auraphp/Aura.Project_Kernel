@@ -6,7 +6,7 @@ This kernel package exists as a base for [Aura.Cli_Kernel](https://github.com/au
 
 ### Requirements
 
-This kernel requires PHP 5.3 or later. Unlike Aura library packages, this 
+This kernel requires PHP 5.3 or later. Unlike Aura library packages, this
 kernel package has userland dependencies, which themselves may have other
 dependencies:
 
@@ -21,7 +21,7 @@ This kernel is installable and autoloadable via Composer with the following
     "require": {
         "aura/project-kernel": "dev-develop-2"
     }
-    
+
 Alternatively, download or clone this repository, then require or include its
 _autoload.php_ file.
 
@@ -29,8 +29,8 @@ _autoload.php_ file.
 
 [![Build Status](https://travis-ci.org/auraphp/Aura.Project_Kernel.png?branch=develop-2)](https://travis-ci.org/auraphp/Aura.Project_Kernel)
 
-This kernel has 100% code coverage with [PHPUnit](http://phpunit.de). To run 
-the tests at the command line, go to the `tests/kernel/` directory and issue 
+This kernel has 100% code coverage with [PHPUnit](http://phpunit.de). To run
+the tests at the command line, go to the `tests/kernel/` directory and issue
 `./phpunit.sh`.
 
 ### PSR Compliance
@@ -50,7 +50,7 @@ To ask questions, provide feedback, or otherwise communicate with the Aura commu
 
 This package defines the following services in the _Container_:
 
-- `logger`: an instance of _Psr\Log\NullLogger_
+- `aura/project-kernel:logger`: an instance of _Psr\Log\NullLogger_
 
 Note that service definitions set at the kernel level may be reset at the project level.
 

@@ -1,8 +1,7 @@
 <phpunit bootstrap="./bootstrap.php">
     <testsuites>
         <testsuite>
-            <directory>./</directory>
-            <exclude>./vendor</exclude>
+            <directory>./src</directory>
         </testsuite>
     </testsuites>
 </phpunit>
