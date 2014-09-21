@@ -105,9 +105,9 @@ class Project
         if ($sub) {
             $sub = ltrim($sub, DIRECTORY_SEPARATOR);
             return $this->path . str_replace('/', DIRECTORY_SEPARATOR, $sub);
-        } else {
-            return $this->path;
         }
+
+        return $this->path;
     }
 
     /**

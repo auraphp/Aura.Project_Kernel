@@ -1,1 +1,1 @@
-Initial 2.0 "Google beta" release.
+Initial 2.0 beta release.
