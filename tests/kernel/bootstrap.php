@@ -10,3 +10,4 @@ if (! is_readable($composer_autoload)) {
 
 require $composer_autoload;
 require dirname(dirname(__DIR__)) . '/autoload.php';
+require __DIR__ . '/vendor/aura/di/tests/container/src/AbstractContainerTest.php';
