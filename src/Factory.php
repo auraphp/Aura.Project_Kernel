@@ -35,17 +35,23 @@ class Factory
      *
      * @param string $class The kernel class.
      *
+     * @param bool $auto_resolve Should auto-resolution be enabled?
+     *
      * @return object An instance of the kernel class.
      *
      */
-    public function newKernel($path, $class)
-    {
+    public function newKernel(
+        $path,
+        $class,
+        $auto_resolve = ContainerBuilder::ENABLE_AUTO_RESOLVE
+    ) {
         require "{$path}/config/_env.php";
         $di = $this->newContainer(
             $path,
             $_ENV['AURA_CONFIG_MODE'],
             "{$path}/composer.json",
-            "{$path}/vendor/composer/installed.json"
+            "{$path}/vendor/composer/installed.json",
+            $auto_resolve
         );
         return $di->newInstance($class);
     }
@@ -62,11 +68,18 @@ class Factory
      *
      * @param string $installed_file The path to the `installed.json` file.
      *
+     * @param bool $auto_resolve Should auto-resolution be enabled?
+     *
      * @return \Aura\Di\Container
      *
      */
-    public function newContainer($path, $mode, $composer_file, $installed_file)
-    {
+    public function newContainer(
+        $path,
+        $mode,
+        $composer_file,
+        $installed_file,
+        $auto_resolve = ContainerBuilder::ENABLE_AUTO_RESOLVE
+    ) {
         $project = $this->newProject(
             $path,
             $mode,
@@ -76,7 +89,8 @@ class Factory
         $builder = new ContainerBuilder;
         return $builder->newInstance(
             array('project' => $project),
-            $project->getConfigClasses()
+            $project->getConfigClasses(),
+            $auto_resolve
         );
     }
 
