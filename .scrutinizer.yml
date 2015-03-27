@@ -1,5 +1,5 @@
 filter:
-    paths: ["src/\*"]
+    paths: ["src/*"]
 tools:
     external_code_coverage: true
     php_code_coverage: true
@@ -8,4 +8,3 @@ tools:
     php_pdepend: true
     php_analyzer: true
     php_cpd: true
-
