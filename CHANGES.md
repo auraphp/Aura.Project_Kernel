@@ -1,2 +1,2 @@
-- ADD: Factory::newKernel() and Factory::newContainer() have an added param,
-  $auto_resolve, to allow you enable/disable auto-resolution in the container
+This release modifies the testing structure and updates other support files.
+
