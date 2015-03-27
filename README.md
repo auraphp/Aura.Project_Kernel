@@ -6,7 +6,7 @@ This kernel package exists as a base for [Aura.Cli_Kernel](https://github.com/au
 
 ### Requirements
 
-This kernel requires PHP 5.3 or later. Unlike Aura library packages, this
+This kernel requires PHP 5.3 or later; we recommend using the latest available version of PHP as a matter of principle. Unlike Aura library packages, this
 kernel package has userland dependencies, which themselves may have other
 dependencies:
 
@@ -29,9 +29,7 @@ _autoload.php_ file.
 
 [![Build Status](https://travis-ci.org/auraphp/Aura.Project_Kernel.png?branch=develop-2)](https://travis-ci.org/auraphp/Aura.Project_Kernel)
 
-This kernel has 100% code coverage with [PHPUnit](http://phpunit.de). To run
-the tests at the command line, go to the `tests/kernel/` directory and issue
-`./phpunit.sh`.
+This kernel has 100% code coverage with [PHPUnit](http://phpunit.de). To run the unit tests at the command line, issue `composer install` and then `phpunit` at the package root. This requires [Composer](http://getcomposer.org/) to be available as `composer`, and [PHPUnit](http://phpunit.de/manual/) to be available as `phpunit`.
 
 ### PSR Compliance
 
