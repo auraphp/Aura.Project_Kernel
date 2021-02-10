@@ -112,7 +112,7 @@ class Factory
     public function newProject($path, $mode, $composer_file, $installed_file)
     {
         $installed_file = (array) $this->readFile($installed_file);
-        if ($installed_file['packages']) {
+        if (array_key_exists('packages', $installed_file)) {
             $installed = $installed_file['packages'];
         } else {
             $installed = $installed_file;
