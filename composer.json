@@ -49,7 +49,7 @@
         "test": [
             "@composer install",
             "./vendor/bin/phpunit"
-	]
+        ]
     },
     "scripts-descriptions": {
         "test": "Run unit tests"
