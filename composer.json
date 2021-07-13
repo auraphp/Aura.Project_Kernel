@@ -41,5 +41,14 @@
             "Aura\\Project_Kernel\\": "tests/",
             "Aura\\Di\\": "vendor/aura/di/tests/"
         }
+    },
+    "scripts": {
+        "test": [
+            "@composer install",
+            "./vendor/bin/phpunit"
+	]
+    },
+    "scripts-descriptions": {
+        "test": "Run unit tests"
     }
 }
