@@ -113,7 +113,7 @@ class ProjectTest extends \PHPUnit\Framework\TestCase
         }
     ]';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->composer = json_decode($this->composer);
         $this->installed = json_decode($this->installed);
@@ -142,8 +142,13 @@ class ProjectTest extends \PHPUnit\Framework\TestCase
         $actual = $this->project->getPath();
         $this->assertSame($expect, $actual);
 
-        $expect = $this->path . '/foo/bar/baz.txt';
-        $actual = $this->project->getPath('foo/bar/baz.txt');
+        $actual = $this->project->getPath(
+            'foo' . DIRECTORY_SEPARATOR . 'bar'
+            . DIRECTORY_SEPARATOR . 'baz.txt'
+        );
+        $expect = $this->path . DIRECTORY_SEPARATOR . 'foo'
+            . DIRECTORY_SEPARATOR . 'bar'
+            . DIRECTORY_SEPARATOR . 'baz.txt';
         $this->assertSame($expect, $actual);
     }
 

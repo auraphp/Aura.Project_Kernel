@@ -7,4 +7,9 @@
     <php>
         <env name="AURA_CONFIG_MODE" value="kernel" />
     </php>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./src</directory>
+        </whitelist>
+    </filter>
 </phpunit>
