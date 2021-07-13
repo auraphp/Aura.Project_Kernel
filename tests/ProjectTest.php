@@ -113,7 +113,7 @@ class ProjectTest extends \PHPUnit\Framework\TestCase
         }
     ]';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->composer = json_decode($this->composer);
         $this->installed = json_decode($this->installed);
