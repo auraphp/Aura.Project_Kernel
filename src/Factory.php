@@ -41,7 +41,7 @@ class Factory
     public function newKernel(
         $path,
         $class,
-        $auto_resolve = ContainerBuilder::ENABLE_AUTO_RESOLVE
+        $auto_resolve = ContainerBuilder::AUTO_RESOLVE
     ) {
         require "{$path}/config/_env.php";
         $di = $this->newContainer(
@@ -76,7 +76,7 @@ class Factory
         $mode,
         $composer_file,
         $installed_file,
-        $auto_resolve = ContainerBuilder::ENABLE_AUTO_RESOLVE
+        $auto_resolve = ContainerBuilder::AUTO_RESOLVE
     ) {
         $project = $this->newProject(
             $path,
@@ -85,8 +85,7 @@ class Factory
             $installed_file
         );
         $builder = new ContainerBuilder;
-        return $builder->newInstance(
-            array('project' => $project),
+        return $builder->newConfiguredInstance(
             $project->getConfigClasses(),
             $auto_resolve
         );
@@ -111,11 +110,17 @@ class Factory
      */
     public function newProject($path, $mode, $composer_file, $installed_file)
     {
+        $installed_file = (array) $this->readFile($installed_file);
+        if (array_key_exists('packages', $installed_file)) {
+            $installed = $installed_file['packages'];
+        } else {
+            $installed = $installed_file;
+        }
         return new Project(
             $path,
             $mode,
             $this->readFile($composer_file),
-            $this->readFile($installed_file)
+            $installed
         );
     }
 

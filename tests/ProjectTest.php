@@ -1,7 +1,7 @@
 <?php
 namespace Aura\Project_Kernel;
 
-class ProjectTest extends \PHPUnit_Framework_TestCase
+class ProjectTest extends \PHPUnit\Framework\TestCase
 {
     protected $project;
 
@@ -127,7 +127,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
 
     public function testNoComposer()
     {
-        $this->setExpectedException('Aura\Project_Kernel\Exception');
+        $this->expectException('Aura\Project_Kernel\Exception');
         $this->project = new Project(
             $this->path,
             $this->mode,
