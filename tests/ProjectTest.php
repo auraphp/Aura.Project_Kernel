@@ -142,16 +142,14 @@ class ProjectTest extends \PHPUnit\Framework\TestCase
         $actual = $this->project->getPath();
         $this->assertSame($expect, $actual);
 
-        if (DIRECTORY_SEPARATOR != '\\') {
-            $actual = $this->project->getPath('foo/bar/baz.txt');
-            $expect = $this->path . '/foo/bar/baz.txt';
-            $this->assertSame($expect, $actual);
-        } else {
-            // on Windows
-            $actual = $this->project->getPath('foo\bar\baz.txt');
-            $expect = $this->path . '\foo\bar\baz.txt';
-            $this->assertSame($expect, $actual);
-        }
+        $actual = $this->project->getPath(
+            'foo' . DIRECTORY_SEPARATOR . 'bar'
+            . DIRECTORY_SEPARATOR . 'baz.txt'
+        );
+        $expect = $this->path . DIRECTORY_SEPARATOR . 'foo'
+            . DIRECTORY_SEPARATOR . 'bar'
+            . DIRECTORY_SEPARATOR . 'baz.txt';
+        $this->assertSame($expect, $actual);
     }
 
     public function testGetMode()
