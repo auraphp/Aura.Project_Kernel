@@ -1,16 +1,11 @@
-build:
-    nodes:
-        analysis:
-            tests:
-                override:
-                    - php-scrutinizer-run
+checks:
+    php:
+        code_rating: true
+        duplication: true
 filter:
     paths: ["src/*"]
 tools:
-    external_code_coverage: true
-    php_code_coverage: true
-    php_sim: true
-    php_mess_detector: true
-    php_pdepend: true
-    php_analyzer: true
-    php_cpd: true
+    php_code_coverage:
+        enabled: true
+    external_code_coverage:
+        timeout: 600
