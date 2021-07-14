@@ -12,7 +12,7 @@ jobs:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
-        operating-system: [ubuntu-latest, windows-latest, macOS-latest]
+        operating-system: [ubuntu-latest]
         php-versions: ['7.2']
     name: PHP ${{ matrix.php-versions }} Test on ${{ matrix.operating-system }}
 
@@ -46,8 +46,14 @@ jobs:
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
 
-    - name: Run test suite
-      run: |
-        vendor/bin/phpunit --coverage-clover=coverage.clover
-        wget https://scrutinizer-ci.com/ocular.phar
-        php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+    # Now run the PHPUnit tests
+    - name: Run PHPUnit tests
+      run: ./vendor/bin/phpunit --configuration=phpunit.xml --coverage-clover ./build/coverage/log/coverage.xml
+
+    # For code coverage report we are uploading our code coverage report to scrutinizer
+    - name: Downloading scrutinizer ocular.phar
+      run: wget https://scrutinizer-ci.com/ocular.phar
+
+    # Uploading reports for analysis
+    - name: Uploading code coverage to scrutinize
+      run: php ocular.phar code-coverage:upload --format=php-clover ./build/coverage/log/coverage.xml
