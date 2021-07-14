@@ -50,9 +50,9 @@ jobs:
       run: vendor/bin/phpunit --coverage-clover=coverage.clover --coverage-text
 
     - name: Download scrutinizer ocular.phar
-      if: ${{ matrix.php-version == '7.2' && matrix.operating-system == 'ubuntu-latest' }}
+      if: ${{ matrix.php-versions == '7.2' && matrix.operating-system == 'ubuntu-latest' }}
       run: wget https://scrutinizer-ci.com/ocular.phar
 
     - name: Upload code coverage to scrutinizer
-      if: ${{ matrix.php-version == '7.2' && matrix.operating-system == 'ubuntu-latest' }}
+      if: ${{ matrix.php-versions == '7.2' && matrix.operating-system == 'ubuntu-latest' }}
       run: php ocular.phar code-coverage:upload --format=php-clover coverage.clover
