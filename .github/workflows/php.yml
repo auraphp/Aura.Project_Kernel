@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         operating-system: [ubuntu-latest, windows-latest, macOS-latest]
-        php-versions: ['7.2', '7.3', '7.4', '8.0']
+        php-versions: ['7.2']
     name: PHP ${{ matrix.php-versions }} Test on ${{ matrix.operating-system }}
 
     steps:
@@ -47,12 +47,7 @@ jobs:
     # Docs: https://getcomposer.org/doc/articles/scripts.md
 
     - name: Run test suite
-      run: vendor/bin/phpunit --coverage-clover=coverage.clover
-
-    - name: Download scrutinizer ocular.phar
-      if: ${{ matrix.php-versions == '7.2' && matrix.operating-system == 'ubuntu-latest' }}
-      run: wget https://scrutinizer-ci.com/ocular.phar
-
-    - name: Upload code coverage to scrutinizer
-      if: ${{ matrix.php-versions == '7.2' && matrix.operating-system == 'ubuntu-latest' }}
-      run: php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+      run: |
+        vendor/bin/phpunit --coverage-clover=coverage.clover
+        wget https://scrutinizer-ci.com/ocular.phar
+        php ocular.phar code-coverage:upload --format=php-clover coverage.clover
