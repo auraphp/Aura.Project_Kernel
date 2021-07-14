@@ -31,7 +31,7 @@ _autoload.php_ file.
 
 [![Build Status](https://travis-ci.org/auraphp/Aura.Project_Kernel.png?branch=develop-2)](https://travis-ci.org/auraphp/Aura.Project_Kernel)
 
-This kernel has 100% code coverage with [PHPUnit](http://phpunit.de). To run the unit tests at the command line, issue `composer install` and then `phpunit` at the package root. This requires [Composer](http://getcomposer.org/) to be available as `composer`, and [PHPUnit](http://phpunit.de/manual/) to be available as `phpunit`.
+This kernel has 100% code coverage with [PHPUnit](http://phpunit.de). To run the unit tests at the command line, issue `composer install` and then `composer test` at the package root. This requires [Composer](http://getcomposer.org/) to be available as `composer`.
 
 ### PSR Compliance
 
