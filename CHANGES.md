@@ -1,1 +1,2 @@
-This release modifies the testing structure and updates other support files.
+* Added support for new composer installed.json format
+* Updated _Config\Common
