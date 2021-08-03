@@ -46,5 +46,13 @@ jobs:
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
 
-    - name: Run test suite
-      run: composer run-script test
+    - name: Run test suite with coverage
+      run: vendor/bin/phpunit --coverage-clover=coverage.clover --coverage-text
+
+    - name: Download scrutinizer ocular.phar
+      if: ${{ matrix.php-versions == '7.2' && matrix.operating-system == 'ubuntu-latest' }}
+      run: wget https://scrutinizer-ci.com/ocular.phar
+
+    - name: Upload code coverage to scrutinizer
+      if: ${{ matrix.php-versions == '7.2' && matrix.operating-system == 'ubuntu-latest' }}
+      run: php ocular.phar code-coverage:upload --format=php-clover coverage.clover
